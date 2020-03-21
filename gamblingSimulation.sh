@@ -4,6 +4,8 @@
 START_STAKE_FOR_DAY=100
 BET=1
 GAMBLE_WON=1 # so GAMBLE_LOST will be 0
+STOP_AT_MIN_STAKE=50
+STOP_AT_MAX_STAKE=150
 
 # variables
 stake=0
@@ -20,4 +22,8 @@ function GambleGame() {
 }
 
 currentStake=$START_STAKE_FOR_DAY
-GambleGame $currentStake
+
+while [ $currentStake -gt $STOP_AT_MIN_STAKE ] && [ $currentStake -lt $STOP_AT_MAX_STAKE ]
+do
+	GambleGame $currentStake
+done
