@@ -7,36 +7,59 @@ GAMBLE_WON=1 # so GAMBLE_LOST will be 0
 STOP_AT_MIN_STAKE=50
 STOP_AT_MAX_STAKE=150
 DAYS_TO_PLAY_IN_MONTH=20
+BET_LIMIT=50
+COUNT_RESET=0
 
-# variables
-stake=0
-day=1
-totalWon=0
-totalLost=0
-daysWon=0
-daysLost=0
+# variables 
+
+stake=$COUNT_RESET
+day=$(( $COUNT_RESET+1 ))
+totalWon=$COUNT_RESET
+totalLost=$COUNT_RESET
+daysWon=$COUNT_RESET
+daysLost=$COUNT_RESET
+stakesBetted=$COUNT_RESET
+stakesWon=$COUNT_RESET
+stakesLost=$COUNT_RESET
+luckiestDay=$START_STAKE_FOR_DAY
+unluckiestDay=$START_STAKE_FOR_DAY
+
 # function for gamble game
 # param1 : curret availible stakes
-function GambleGame() {
+function gambleGame() {
 	temp=$((RANDOM%2))
 	if [ $temp -eq $GAMBLE_WON ]
 	then
-		currentStake=$(( $currentStake+$BET ))
+		currentStake=$(( $1+$BET ))
+		(( stakesWon++ ))
 	else
-		currentStake=$(( $currentStake-$BET ))
+		currentStake=$(( $1-$BET ))
+		(( stakesLost++ ))
 	fi
 }
 
 
-while [ $day -le $DAYS_TO_PLAY_IN_MONTH ]
+while [ $day -le $DAYS_TO_PLAY_IN_MONTH ] 
 do
 	currentStake=$START_STAKE_FOR_DAY
-	while [ $currentStake -gt $STOP_AT_MIN_STAKE ] && [ $currentStake -lt $STOP_AT_MAX_STAKE ] # stopping for day
+	stakesWon=$COUNT_RESET
+	stakesLost=$COUNT_RESET
+	while [ $stakesWon -lt $BET_LIMIT ] && [ $stakesLost -lt $BET_LIMIT ] # stopping for day
 	do
-		GambleGame $currentStake # one gamble
+		gambleGame $currentStake # one gamble
 	done
 
-	if [ $currentStake -eq $STOP_AT_MIN_STAKE ]
+	if [ $currentStake -lt $unluckiestDay ]
+	then
+		unluckiestDay=$currentStake
+	fi
+
+	if [ $currentStake -gt $luckiestDay ]
+	then
+		luckiestDay=$currentStake
+	fi
+
+	if [ $stakesLost -eq $BET_LIMIT ]
 	then
 		totalLost=$(( $totalLost+$START_STAKE_FOR_DAY-$currentStake )) # setting total lost
 		(( daysLost++ )) # increasing total days lost
