@@ -27,19 +27,19 @@ function gambleGame() {
 
 while [ $INFINTE_LOOP ] # monthly gamble, if true then continue for next month
 do
-   # variables
+	# variables
 
-   stake=$COUNT_RESET
-   day=$(( $COUNT_RESET+1 ))
-   totalWon=$COUNT_RESET
-   totalLost=$COUNT_RESET
-   daysWon=$COUNT_RESET
-   daysLost=$COUNT_RESET
-   stakesBetted=$COUNT_RESET
-   stakesWon=$COUNT_RESET
-   stakesLost=$COUNT_RESET
-   luckiestDay=$START_STAKE_FOR_DAY
-   unluckiestDay=$START_STAKE_FOR_DAY
+	stake=$COUNT_RESET
+	day=$(( $COUNT_RESET+1 ))
+	totalWon=$COUNT_RESET
+	totalLost=$COUNT_RESET
+	daysWon=$COUNT_RESET
+	daysLost=$COUNT_RESET
+	stakesBetted=$COUNT_RESET
+	stakesWon=$COUNT_RESET
+	stakesLost=$COUNT_RESET
+	luckiestDay=$START_STAKE_FOR_DAY
+	unluckiestDay=$START_STAKE_FOR_DAY
 
 	while [ $day -le $DAYS_TO_PLAY_IN_MONTH ] 
 	do
