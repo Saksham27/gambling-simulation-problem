@@ -13,7 +13,8 @@ stake=0
 day=1
 totalWon=0
 totalLost=0
-
+daysWon=0
+daysLost=0
 # function for gamble game
 # param1 : curret availible stakes
 function GambleGame() {
@@ -32,14 +33,16 @@ do
 	currentStake=$START_STAKE_FOR_DAY
 	while [ $currentStake -gt $STOP_AT_MIN_STAKE ] && [ $currentStake -lt $STOP_AT_MAX_STAKE ] # stopping for day
 	do
-		GambleGame $currentStake
+		GambleGame $currentStake # one gamble
 	done
 
 	if [ $currentStake -eq $STOP_AT_MIN_STAKE ]
 	then
-		totalLost=$(( $totalLost+$START_STAKE_FOR_DAY-$currentStake ))
+		totalLost=$(( $totalLost+$START_STAKE_FOR_DAY-$currentStake )) # setting total lost
+		(( daysLost++ )) # increasing total days lost
 	else
-		totalWon=$(( $totalWon+$currentStake--$START_STAKE_FOR_DAY ))
+		totalWon=$(( $totalWon+$currentStake-$START_STAKE_FOR_DAY )) # setting total won
+		(( daysWon++ )) # increasing total days won
 	fi
 	(( day++ ))
 done
