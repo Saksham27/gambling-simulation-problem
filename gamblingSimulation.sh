@@ -25,25 +25,11 @@ function gambleGame() {
 	fi
 }
 
-while [ $INFINTE_LOOP ] # monthly gamble, if true then continue for next month
-do
-	# variables
-
-	stake=$COUNT_RESET
-	day=$(( $COUNT_RESET+1 ))
-	totalWon=$COUNT_RESET
-	totalLost=$COUNT_RESET
-	daysWon=$COUNT_RESET
-	daysLost=$COUNT_RESET
-	stakesBetted=$COUNT_RESET
-	stakesWon=$COUNT_RESET
-	stakesLost=$COUNT_RESET
-	luckiestDay=$START_STAKE_FOR_DAY
-	unluckiestDay=$START_STAKE_FOR_DAY
-
+# function for running the gamble game for a month aka 20 days
+function oneMonthGamble() {
 	while [ $day -le $DAYS_TO_PLAY_IN_MONTH ] 
 	do
-		currentStake=$START_STAKE_FOR_DAY
+		local currentStake=$START_STAKE_FOR_DAY
 		stakesWon=$COUNT_RESET
 		stakesLost=$COUNT_RESET
 		while [ $stakesWon -lt $BET_LIMIT ] && [ $stakesLost -lt $BET_LIMIT ] # stopping for day
@@ -71,6 +57,27 @@ do
 		fi
 		(( day++ ))
 	done
+}
+
+
+
+while [ $INFINTE_LOOP ] # monthly gamble, if true then continue for next month
+do
+	# variables
+
+	stake=$COUNT_RESET
+	day=$(( $COUNT_RESET+1 ))
+	totalWon=$COUNT_RESET
+	totalLost=$COUNT_RESET
+	daysWon=$COUNT_RESET
+	daysLost=$COUNT_RESET
+	stakesBetted=$COUNT_RESET
+	stakesWon=$COUNT_RESET
+	stakesLost=$COUNT_RESET
+	luckiestDay=$START_STAKE_FOR_DAY
+	unluckiestDay=$START_STAKE_FOR_DAY
+
+	oneMonthGamble # 20 days gambling per day
 
 	if [ $totalWon -lt $totalLost ] # stopping for next month
 	then
